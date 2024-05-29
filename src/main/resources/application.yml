@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: my-app-unificado
+  # Jackson
+  jackson:
+    default-property-inclusion: non_null
+    property-naming-strategy: SNAKE_CASE
+  # Datasource
+  jpa:
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: jdbc:mysql://localhost:3306/schedule_db
+    username: root
+    password: lS_PtJ31>LtvcVxvm71L
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+# Server port Spring
+server:
+  port: 1712
+
+# Logging
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace
+
+security:
+  jwt:
+    key:
+      private: d418227f7d2e81ff37bb952b645ed2444baeb4e16e7913230ece8159842250d1
+    user:
+      generator: AUTH0JWT_BACKEND
