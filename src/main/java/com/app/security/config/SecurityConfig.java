@@ -47,9 +47,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http -> {
                     http.requestMatchers(HttpMethod.POST,"auth/**").permitAll();
-                    //http.requestMatchers(HttpMethod.POST,"v1/api/schedule/create").permitAll();
-                    //http.requestMatchers("v1/api/**").authenticated();
-                    http.requestMatchers("api/v1/**").permitAll();
+//                    http.requestMatchers(HttpMethod.POST,"v1/api/schedule/create").permitAll();
+                    http.requestMatchers("api/v1/**").authenticated();
+//                    http.requestMatchers("api/v1/**").permitAll();
                     //http.anyRequest().denyAll();
                 })
                 .exceptionHandling(exception -> {
