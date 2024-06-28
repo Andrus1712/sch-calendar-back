@@ -5,6 +5,8 @@ import com.app.security.exception.ErrorResponse;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -46,6 +48,28 @@ public class ControllerAdvice {
         error.setCode(GENERIC_ERROR.getCode());
         error.setMessage(GENERIC_ERROR.getMessage());
         error.setDetails(Collections.singletonList(e.getMessage()));
+        error.setTime(LocalDateTime.now());
+        return error;
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(AuthenticationException.class)
+    public ErrorResponse handleAuthenticatedError(Exception e) {
+        ErrorResponse error = new ErrorResponse();
+        error.setCode(PASSWORD_INVALID_CREDENTIALS.getCode());
+        error.setMessage(PASSWORD_INVALID_CREDENTIALS.getMessage());
+        error.setDetails(Collections.singletonList(e.getMessage()));
+        error.setTime(LocalDateTime.now());
+        return error;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ErrorResponse handleValidatedError(MethodArgumentNotValidException e) {
+        ErrorResponse error = new ErrorResponse();
+        error.setCode(PASSWORD_EMPTY_INVALID_CREDENTIALS.getCode());
+        error.setMessage(PASSWORD_EMPTY_INVALID_CREDENTIALS.getMessage());
+        error.setDetails(Collections.singletonList(e.getBody().getDetail()));
         error.setTime(LocalDateTime.now());
         return error;
     }
