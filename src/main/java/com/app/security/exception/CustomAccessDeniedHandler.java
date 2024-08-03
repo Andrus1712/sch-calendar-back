@@ -1,6 +1,6 @@
 package com.app.security.exception;
 
-import com.app.layer.common.utils.constant.ErrorCatalog;
+import com.app.core.common.utils.constant.ErrorCatalog;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

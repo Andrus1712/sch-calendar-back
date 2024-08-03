@@ -36,23 +36,14 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity userEntity = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found"));
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found"));
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         userEntity.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleEnum().name())));
 
-        userEntity.getRoles().stream()
-                .flatMap(role -> role.getPermissionList().stream())
-                .forEach(permission -> authorities.add(new SimpleGrantedAuthority(permission.getName())));
+        userEntity.getRoles().stream().flatMap(role -> role.getPermissionList().stream()).forEach(permission -> authorities.add(new SimpleGrantedAuthority(permission.getName())));
 
-        return new User(userEntity.getUsername(),
-                userEntity.getPassword(),
-                userEntity.isEnabled(),
-                userEntity.isAccountNonExpired(),
-                userEntity.isCredentialsNonExpired(),
-                userEntity.isAccountNonLocked(),
-                authorities);
+        return new User(userEntity.getUsername(), userEntity.getPassword(), userEntity.isEnabled(), userEntity.isAccountNonExpired(), userEntity.isCredentialsNonExpired(), userEntity.isAccountNonLocked(), authorities);
     }
 
     public AuthResponse loginUser(AuthLoginRequest authLoginRequest) {
@@ -63,10 +54,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String accessToken = jwtUtils.createToken(authentication);
 
-        return new AuthResponse(username,
-                "User login successfully",
-                accessToken,
-                true);
+        return new AuthResponse(username, "User login successfully", accessToken, true);
     }
 
     public Authentication authenticate(String username, String password) {
@@ -86,8 +74,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         String password = createRoleRequest.password();
 
         List<String> rolesRequest = createRoleRequest.roleRequest().roleListName();
-        Collection<RoleEnum> roleEnumCollection = rolesRequest.stream()
-                .map(String::toUpperCase) // Ensure the string matches the enum names
+        Collection<RoleEnum> roleEnumCollection = rolesRequest.stream().map(String::toUpperCase) // Ensure the string matches the enum names
                 .map(RoleEnum::valueOf) // Convert to RoleEnum
                 .toList();
 
@@ -97,15 +84,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
             throw new IllegalArgumentException("The roles specified does not exist.");
         }
 
-        UserEntity userEntity = UserEntity.builder()
-                .username(username)
-                .password(passwordEncoder.encode(password))
-                .roles(roleEntityList)
-                .isEnabled(true)
-                .accountNonLocked(true)
-                .accountNonExpired(true)
-                .credentialsNonExpired(true)
-                .build();
+        UserEntity userEntity = UserEntity.builder().username(username).password(passwordEncoder.encode(password)).roles(roleEntityList).isEnabled(true).accountNonLocked(true).accountNonExpired(true).credentialsNonExpired(true).build();
 
         UserEntity userSaved = userRepository.save(userEntity);
 
