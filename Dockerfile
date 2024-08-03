@@ -1,10 +1,42 @@
 #
 # Build stage
 #
-FROM maven:3.8.3-openjdk-17 AS build
-COPY src /home/app/src
-COPY pom.xml /home/app
-RUN mvn -f /home/app/pom.xml clean package -DskipTests
+FROM eclipse-temurin:21.0.4_7-jdk
+
+#
+# DIR ROOT
+#
+RUN mkdir -p /usr/app
+WORKDIR /usr/app
+
+#
+# COPY FILES powm
+#
+COPY ./pom.xml /usr/app
+COPY ./.mvn /usr/app/.mvn
+COPY ./mvnw /usr/app/
+
+#
+# Download dependencies
+#
+RUN ./mvnw dependency:go-offline
+
+#
+# Code main
+#
+COPY ./src /usr/app/src/
+
+#
+# build proyect
+#
+RUN ./mvnw clean package -DskipTests
+
+#
+# Configure port
+#
 EXPOSE 8080
-# Comando para ejecutar la aplicación
-CMD ["java", "-jar", "/home/app/target/my-app-unificado-0.0.1-SNAPSHOT.jar"]
+
+#
+# Run app
+#
+CMD ["java", "-jar", "/usr/app/target/my-app-unificado-0.0.1-SNAPSHOT.jar"]
