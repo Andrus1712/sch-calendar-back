@@ -39,4 +39,4 @@ EXPOSE 8080
 #
 # Run app
 #
-CMD ["java", "-jar", "/usr/app/target/*.jar"]
+CMD ["java", "-jar", "/usr/app/target/schedule-app-RELEASE-0.0.1.jar"]
