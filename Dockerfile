@@ -39,4 +39,4 @@ EXPOSE 8080
 #
 # Run app
 #
-CMD ["java", "-jar", "/usr/app/target/my-app-unificado-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "/usr/app/target/*.jar"]

@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.app.unificado</groupId>
     <artifactId>my-app-unificado</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>RELEASE-0.0.1</version>
     <name>my-app-unificado</name>
     <description>my-app-unificado</description>
     <properties>
