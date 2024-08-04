@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.app.unificado</groupId>
-    <artifactId>my-app-unificado</artifactId>
+    <artifactId>schedule-app</artifactId>
     <version>RELEASE-0.0.1</version>
-    <name>my-app-unificado</name>
-    <description>my-app-unificado</description>
+    <name>schedule-app</name>
+    <description>schedule-app</description>
     <properties>
         <java.version>17</java.version>
     </properties>
